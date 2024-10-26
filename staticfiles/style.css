@@ -1,0 +1,16 @@
+.profile-dropdown {
+    display:none;
+    position: absolute;
+    right: 20px;
+    background-color: white;
+    box-shadow: 0px 8px 16px rgba(0,0,0,0.2);
+    z-index: 1;
+}
+.profile-dropdown button {
+    padding: 12px 16px;
+    display: block;
+    text-decoration: none;
+}
+.show-dropdown{
+    display: block;
+}

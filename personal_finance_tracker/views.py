@@ -23,12 +23,15 @@ def index(request):
     expenses_by_category = total_budget["expense_by_category"]
     expenses_with_percentage = []
     for expense in expenses_by_category:
-        percentage = (expense["total"] / total_income) * 100 if total_expense > 0 else 0
+        if total_expense > 0:
+            percentage = (expense["total"] / total_expense) * 100
+        else:
+            percentage = 0
         expenses_with_percentage.append(
             {
                 "category": expense["category"],
                 "total": expense["total"],
-                "percentage": round(percentage),
+                "percentage": round(min(percentage, 100), 2),
             }
         )
 
@@ -37,7 +40,7 @@ def index(request):
         "expense": str(total_expense),
         "balance": str(total_balance),
     }
-    print('expenses_with_percentage', expenses_with_percentage)
+    print("expenses_with_percentage", expenses_with_percentage)
 
     context = {
         "total_budget": total_budget,

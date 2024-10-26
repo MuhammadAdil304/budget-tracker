@@ -73,7 +73,9 @@
         </div>
 
         {% comment %} Balance {% endcomment %}
-        <div class="{% if total_budget.total_balance >= 0 %} bg-green-800 {% else %} bg-red-800 {% endif %}  p-6 rounded-lg shadow-md">
+        <div
+          class="{% if total_budget.total_balance >= 0 %} bg-green-800 {% else %} bg-red-800 {% endif %} p-6 rounded-lg shadow-md"
+        >
           <h2 class="text-lg font-semibold">Balance</h2>
           <p class="text-4xl mt-2">{{total_budget.total_balance}}</p>
         </div>
@@ -86,13 +88,21 @@
         <table class="border-collapse border w-full bg-gray-800">
           <thead>
             <tr>
-              <th class="px-3 py-2 border border-gray-400 bg-gray-600 text-start">
+              <th
+                class="px-3 py-2 border border-gray-400 bg-gray-600 text-start"
+              >
                 Category
               </th>
-              <th class="px-3 py-2 border border-gray-400 bg-gray-600 text-start">
+              <th
+                class="px-3 py-2 border border-gray-400 bg-gray-600 text-start"
+              >
                 Amount
               </th>
-              <th class="px-3 py-2 border border-gray-400 bg-gray-600 text-start">Date</th>
+              <th
+                class="px-3 py-2 border border-gray-400 bg-gray-600 text-start"
+              >
+                Date
+              </th>
             </tr>
           </thead>
           <tbody>
@@ -121,46 +131,46 @@
 
       {% comment %} Transaction Categories {% endcomment %}
       <div class="mt-10">
-          {% if expense_by_category %}
-          <h2 class="text-xl font-bold mb-4 ">Transactions by Category</h2>
-          <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {% for expense in expense_by_category %}
-            <div class="bg-gray-800 p-4 rounded-lg">
-              <h3 class="font-semibold">{{expense.category}}</h3>
-              <div class="flex justify-between items-center">
-                <p>{{expense.total}}</p>
-                <p>{{ expense.percentage }}%</p>
-              </div>
-              <div class="bg-gray-700 mt-2 h-2 rounded-full">
-                <div
-                  class="h-full rounded-full"
-                  style="width: {{ expense.percentage }}%;
-                  background-color: blue "
-                ></div>
-              </div>
+        {% if expense_by_category %}
+        <h2 class="text-xl font-bold mb-4">Transactions by Category</h2>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+          {% for expense in expense_by_category %}
+          <div class="bg-gray-800 p-4 rounded-lg">
+            <h3 class="font-semibold">{{expense.category}}</h3>
+            <div class="flex justify-between items-center">
+              <p>{{expense.total}}</p>
+              <p>{{ expense.percentage }}%</p>
             </div>
-            {% endfor %}
+            <div class="bg-gray-700 mt-2 h-2 rounded-full">
+              <div
+                class="h-full rounded-full"
+                style="width: {{ expense.percentage }}%;
+                  background-color: blue "
+              ></div>
+            </div>
           </div>
-          {% endif %}
+          {% endfor %}
+        </div>
+        {% endif %}
       </div>
       <!-- Expense vs Income Pie Chart -->
-       <h3 class='text-xl font-bold my-5 text-center'>Financial Overview</h3>
+      <h3 class="text-xl font-bold my-5 text-center">Financial Overview</h3>
       <div class="flex justify-center gap-10 mt-5">
-        <div class="w-1/2 ">
-            <canvas id="barChart"></canvas>
-            <canvas id="lineChart"></canvas>
+        <div class="w-1/2">
+          <canvas id="barChart"></canvas>
+          <canvas id="lineChart"></canvas>
         </div>
         <div class="w-1/2">
-            <canvas id="pieChart"></canvas>
+          <canvas id="pieChart"></canvas>
         </div>
-    </div>
+      </div>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script>
       const ctxBar = document.getElementById('barChart').getContext('2d');
-      const chartData = {{ chart_data|safe }};
-      console.log(chartData);
+      const chartDataBar = {{ chart_data|safe }};
+      const balanceColorBar = chartDataBar.balance >= 0 ? 'green' :'red'
 
       const budgetBarChart = new Chart(ctxBar, {
           type: 'bar',  // Ya 'pie', 'line', jo aap chahen
@@ -168,11 +178,11 @@
               labels: ['Income', 'Expenses', 'Balance'],
               datasets: [{
                   label: 'Financial Overview',
-                  data: [chartData.income, chartData.expense, chartData.balance],
+                  data: [chartDataBar.income, chartDataBar.expense, chartDataBar.balance],
                   backgroundColor: [
-                      'blue',
-                      'green',
-                      'yellow',
+                  'rgb(30 64 175)',
+                  'rgb(249 115 22)',
+                  balanceColorBar
                   ],
                   borderColor: [
                       'rgba(75, 192, 192, 1)',
@@ -194,6 +204,7 @@
     <script>
       const ctxLine = document.getElementById('lineChart').getContext('2d');
       const chartDataLine = {{ chart_data|safe }};
+      const balanceColorLine = chartDataLine.balance >= 0 ? 'green' : 'red'
 
       const budgetLineChart = new Chart(ctxLine, {
           type: 'line',  // Ya 'pie', 'line', jo aap chahen
@@ -201,11 +212,11 @@
               labels: ['Income', 'Expenses', 'Balance'],
               datasets: [{
                   label: 'Financial Overview',
-                  data: [chartData.income, chartData.expense, chartData.balance],
+                  data: [chartDataLine.income, chartDataLine.expense, chartDataLine.balance],
                   backgroundColor: [
-                      'blue',
-                      'green',
-                      'yellow',
+                  'rgb(30 64 175)',
+                  'rgb(249 115 22)',
+                  balanceColorLine
                   ],
                   borderColor: [
                       'rgba(75, 192, 192, 1)',
@@ -227,19 +238,18 @@
     <script>
       const ctxPie = document.getElementById('pieChart').getContext('2d');
       const chartDataPie = {{ chart_data|safe }};
-      console.log(chartData);
-
+      const balanceColorPie = chartDataPie.balance >= 0 ? 'green' : 'red'
       const budgetPieChart = new Chart(ctxPie, {
           type: 'pie',  // Ya 'pie', 'line', jo aap chahen
           data: {
               labels: ['Income', 'Expenses', 'Balance'],
               datasets: [{
                   label: 'Financial Overview',
-                  data: [chartData.income, chartData.expense, chartData.balance],
+                  data: [chartDataPie.income, chartDataPie.expense, chartDataPie.balance],
                   backgroundColor: [
-                      'blue',
-                      'green',
-                      'yellow',
+                      'rgb(30 64 175)',
+                      'rgb(249 115 22)',
+                      balanceColorPie
                   ],
                   borderColor: [
                       'rgba(75, 192, 192, 1)',
