@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    {% load static %}
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <title>Finance tracking</title>
+  </head>
+  <body class="bg-gray-900 text-white">
+    <div>
+      <div class="flex justify-center items-center h-[100vh]">
+        <div class="w-3/6 bg-gray-800 rounded p-4">
+          <h3 class="font-semibold text-2xl uppercase">Sign up</h3>
+          <form method="post">
+            {% csrf_token %}
+            <div>
+              <input
+                type="name"
+                required
+                placeholder="First name"
+                class="bg-gray-700 w-full rounded p-2 my-3"
+                name="first_name"
+              />
+            </div>
+            <div>
+              <input
+                type="name"
+                required
+                placeholder="Last name"
+                class="bg-gray-700 w-full rounded p-2 my-3"
+                name="last_name"
+              />
+            </div>
+            <div>
+              <input
+                type="name"
+                required
+                placeholder="Username"
+                class="bg-gray-700 w-full rounded p-2 my-3"
+                name="username"
+              />
+            </div>
+            <div>
+              <input
+                type="password"
+                required
+                placeholder="Password"
+                class="bg-gray-700 w-full rounded p-2 my-3"
+                name="password"
+              />
+            </div>
+            {% if messages %}
+            <ul class="messages">
+              {% for message in messages %}
+              <li class='{% if message.tags %}{{ message.tags }}{% endif %}'>
+                {{ message }}
+              </li>
+              {% endfor %}
+            </ul>
+            {% endif %}
+            <div class="w-100 flex justify-between items-center">
+              <input
+                type="submit"
+                value="Signup"
+                class="bg-blue-400 text-black font-semibold px-3 py-2 rounded hover:bg-gray-700 hover:text-white transistion-all duration-300 cursor-pointer"
+              />
+              <p>
+                Already have an account!
+                <a href="{% url 'login' %}" class="text-blue-400 underline"
+                  >Login</a
+                >
+              </p>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

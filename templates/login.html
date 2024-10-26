@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    {% load static %}
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <title>Finance tracking</title>
+  </head>
+  <body class='bg-gray-900 text-white'>
+    <div>
+      <div
+        class="flex justify-center items-center h-[100vh]"
+      >
+        <div class="w-2/6 bg-gray-800 rounded p-4">
+          <h3 class="font-semibold text-2xl uppercase">Login</h3>
+          <form method="post">
+            {% csrf_token %}
+            <div>
+              <input
+                type="name"
+                required
+                placeholder="Username"
+                class='bg-gray-700 w-full rounded p-2 my-3'
+                name="username"
+              />
+            </div>
+            <div>
+              <input
+                type="password"
+                required
+                placeholder="Password"
+                class='bg-gray-700 w-full rounded p-2 my-3'
+                name="password"
+              />
+            </div>
+            {% if messages %}
+            <ul class="messages">
+              {% for message in messages %}
+              <li {% if message.tags %} class="{{ message.tags }} " {% endif %}>
+                {{ message }}
+              </li>
+              {% endfor %}
+            </ul>
+            {% endif %}
+            <div class="w-100 flex justify-between items-center">
+              <input
+                type="submit"
+                value="Login"
+                class="bg-blue-400 text-black font-semibold px-3 py-2 rounded hover:bg-gray-700 hover:text-white transistion-all duration-300 cursor-pointer"
+              />
+              <p>Create an account! <a href="/signup" class="text-blue-400 underline">Signup</a></p>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
