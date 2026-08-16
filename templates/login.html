@@ -1,59 +1,94 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
+<head>
     {% load static %}
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <script src="https://cdn.tailwindcss.com"></script>
-    <title>Finance tracking</title>
-  </head>
-  <body class='bg-gray-900 text-white'>
-    <div>
-      <div
-        class="flex justify-center items-center h-[100vh]"
-      >
-        <div class="w-2/6 bg-gray-800 rounded p-4">
-          <h3 class="font-semibold text-2xl uppercase">Login</h3>
-          <form method="post">
-            {% csrf_token %}
-            <div>
-              <input
-                type="name"
-                required
-                placeholder="Username"
-                class='bg-gray-700 w-full rounded p-2 my-3'
-                name="username"
-              />
-            </div>
-            <div>
-              <input
-                type="password"
-                required
-                placeholder="Password"
-                class='bg-gray-700 w-full rounded p-2 my-3'
-                name="password"
-              />
-            </div>
-            {% if messages %}
-            <ul class="messages">
-              {% for message in messages %}
-              <li {% if message.tags %} class="{{ message.tags }} " {% endif %}>
-                {{ message }}
-              </li>
-              {% endfor %}
-            </ul>
-            {% endif %}
-            <div class="w-100 flex justify-between items-center">
-              <input
-                type="submit"
-                value="Login"
-                class="bg-blue-400 text-black font-semibold px-3 py-2 rounded hover:bg-gray-700 hover:text-white transistion-all duration-300 cursor-pointer"
-              />
-              <p>Create an account! <a href="/signup" class="text-blue-400 underline">Signup</a></p>
-            </div>
-          </form>
+    <title>Login - Budget Tracker</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'style.css' %}" />
+</head>
+<body class="auth-container">
+    <div class="auth-card">
+        <div class="auth-header">
+            <div class="auth-logo">Budget<span>tracker</span></div>
+            <h1 class="auth-title">Welcome back</h1>
+            <p class="auth-subtitle">Sign in to your account to continue</p>
         </div>
-      </div>
+
+        {% if messages %}
+        <ul class="messages" role="alert">
+            {% for message in messages %}
+            <li class="message {{ message.tags }}">
+                <svg width="20" height="20" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                    {% if message.tags == 'error' %}
+                    <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd"/>
+                    {% else %}
+                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.857-9.809a.75.75 0 00-1.214-.882l-3.483 4.79-1.88-1.88a.75.75 0 10-1.06 1.061l2.5 2.5a.75.75 0 001.137-.089l4-5.5z" clip-rule="evenodd"/>
+                    {% endif %}
+                </svg>
+                {{ message }}
+            </li>
+            {% endfor %}
+        </ul>
+        {% endif %}
+
+        <form method="post" class="auth-form" novalidate>
+            {% csrf_token %}
+            
+            <div class="input-group">
+                <label for="id_username" class="input-label">Username</label>
+                <input 
+                    type="text" 
+                    name="username" 
+                    id="id_username"
+                    required
+                    autocomplete="username"
+                    placeholder="Enter your username"
+                    class="input-field"
+                    aria-describedby="username-hint"
+                >
+                <span id="username-hint" class="input-hint">Your unique username</span>
+            </div>
+
+            <div class="input-group">
+                <label for="id_password" class="input-label">Password</label>
+                <div class="password-wrapper">
+                    <input 
+                        type="password" 
+                        name="password" 
+                        id="id_password"
+                        required
+                        autocomplete="current-password"
+                        placeholder="Enter your password"
+                        class="input-field"
+                        aria-describedby="password-hint"
+                    >
+                    <button type="button" class="password-toggle" aria-label="Toggle password visibility">
+                        <svg class="eye-open" width="20" height="20" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                            <path d="M10 12a2 2 0 100-4 2 2 0 000 4z"/>
+                            <path fill-rule="evenodd" d="M.458 10C1.732 5.943 5.522 3 10 3s8.268 2.943 9.542 7c-1.274 4.057-5.064 7-9.542 7S1.732 14.057.458 10zM14 10a4 4 0 11-8 0 4 4 0 018 0z" clip-rule="evenodd"/>
+                        </svg>
+                        <svg class="eye-closed" width="20" height="20" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true" style="display: none;">
+                            <path fill-rule="evenodd" d="M3.707 2.293a1 1 0 00-1.414 1.414l14 14a.997.997 0 001.387-.043 36.58 36.58 0 002.44-7.232 36.585 36.585 0 00-2.44-7.232A.997.997 0 0015.293 3.707l-14-14zM9.88 5.04a.75.75 0 011.06 0l3.526 3.526a1.75 1.75 0 10-2.475 2.474l-1.006-1.006a2.25 2.25 0 113.182 3.182l-.998.999a3.25 3.25 0 01-4.565-4.565l1.005-1.006a.75.75 0 010-1.06zM12.293 7.293l3.536 3.536a2.5 2.5 0 010 3.536l-7 7a.75.75 0 01-1.06-1.06l6.25-6.25a1 1 0 000-1.414l-4-4a.75.75 0 111.06-1.06l2 2z" clip-rule="evenodd"/>
+                        </svg>
+                    </button>
+                </div>
+                <span id="password-hint" class="input-hint">Your account password</span>
+            </div>
+
+            <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 0.5rem;">
+                Sign In
+            </button>
+        </form>
+
+        <div class="auth-footer">
+            <p>Don't have an account? <a href="{% url 'signup' %}">Create one</a></p>
+        </div>
     </div>
-  </body>
+
+    <script src="{% static 'app.js' %}"></script>
+</body>
 </html>
