@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 
 from pathlib import Path
 import os
+import shutil
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -78,10 +79,18 @@ WSGI_APPLICATION = 'personal_finance_tracker.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
+DATABASE_PATH = BASE_DIR / 'db.sqlite3'
+
+if os.environ.get('VERCEL'):
+    tmp_db_path = Path('/tmp/db.sqlite3')
+    if not tmp_db_path.exists() and DATABASE_PATH.exists():
+        shutil.copyfile(DATABASE_PATH, tmp_db_path)
+    DATABASE_PATH = tmp_db_path
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'NAME': DATABASE_PATH,
     }
 }
 
