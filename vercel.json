@@ -1,20 +1,16 @@
 {
-    "version": 2,
-    "builds": [
-      {
-        "src": "personal_finance_tracker/wsgi.py",
-        "use": "@vercel/python"
-      }
-    ],
-    "routes": [
-      {
-        "src": "/static/(.*)",
-        "dest": "/static/$1"
-      },
-      {
-        "src": "/(.*)",
-        "dest": "personal_finance_tracker/wsgi.py"
-      }
-    ]
-  }
-  
+  "version": 2,
+  "buildCommand": "python manage.py collectstatic --noinput",
+  "builds": [
+    {
+      "src": "personal_finance_tracker/wsgi.py",
+      "use": "@vercel/python"
+    }
+  ],
+  "routes": [
+    {
+      "src": "/(.*)",
+      "dest": "personal_finance_tracker/wsgi.py"
+    }
+  ]
+}
